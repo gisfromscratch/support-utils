@@ -4,7 +4,7 @@ Finds data errors in the specified file.
 
 import csv
 import sys
-from attribute_rule import AttributeRule
+from attribute_rule import AttributeRule, NonVisibleCodepointsRule
 
 
 def main(file_path, delimiter):
@@ -13,6 +13,7 @@ def main(file_path, delimiter):
     file_path -- the input file path
     """
     rule = AttributeRule(r"\s*")
+    controlRule = NonVisibleCodepointsRule()
     with open(file_path, mode="r", encoding="utf-8") as file:
         reader = csv.reader(file, delimiter=delimiter)
         for line in reader:
