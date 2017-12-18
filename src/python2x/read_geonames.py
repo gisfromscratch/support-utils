@@ -29,19 +29,30 @@ try:
 except:
     print "Usage:", sys.argv[0], " <file>."
     sys.exit(1)
+
+inMemory = False
+if 2 < len(sys.argv):
+    if "in-memory" == sys.argv[2]:
+        inMemory = True
    
 eps = 0.000001
 lineCount = 0
+x = []
+y = []
 with open(inputFile, "r") as fileStream:
     for line in fileStream:
         tokens = line.split('\t')
         lat = float(tokens[4])
         lon = float(tokens[5])
         if (isValidLatitude(lat) and isValidLongitude(lon)):
-            pass
+            if inMemory:
+                x.append(lon)
+                y.append(lat)    
         else:
             print "Coordinates are invalid!\t", line
         lineCount = lineCount + 1
 
 print lineCount, "lines read."
+if inMemory:
+    print len(x), "coordinates read."
         
