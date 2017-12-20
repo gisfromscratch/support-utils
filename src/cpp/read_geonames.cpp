@@ -7,9 +7,9 @@
 
 using namespace std;
 
-const float eps = 0.000001;
+const double eps = 0.000001;
 
-bool isValidLatitude(float lat)
+bool isValidLatitude(double lat)
 {
     if (-90 - eps < lat && lat < 90 + eps)
     {
@@ -19,7 +19,7 @@ bool isValidLatitude(float lat)
     return false;
 }
 
-bool isValidLongitude(float lon)
+bool isValidLongitude(double lon)
 {
     if (-180 - eps < lon && lon < 180 + eps)
     {
@@ -34,30 +34,44 @@ void readLines(char *inputFile, bool inMemory)
     ifstream fileStream(inputFile);
     string line;
     int lineCount = 0;
-    vector<float> x;
-    vector<float> y;
+    vector<double> x;
+    vector<double> y;
     for (; getline(fileStream, line); lineCount++)
     {
         stringstream lineStream(line);
         string token;
-        float lat;
-        float lon;
+        double lat;
+        double lon;
         for (int tokenIndex = 0; getline(lineStream, token, '\t') && tokenIndex < 6; tokenIndex++)
         {
             switch (tokenIndex)
             {
                 case 4:
-                    lat = atof(token.c_str());
-                    if (inMemory && isValidLatitude(lat))
+                    if (inMemory)
                     {
-                        y.push_back(lat);
+                        lat = strtod(token.c_str(), NULL);
+                        if (isValidLatitude(lat))
+                        {
+                            y.push_back(lat);
+                        }
+                        else
+                        {
+                            cout << token << " is not a valid latitude!" << endl;
+                        }
                     }                    
                     break;
                 case 5:
-                    lon = atof(token.c_str());
-                    if (inMemory && isValidLongitude(lon))
+                    if (inMemory)
                     {
-                        x.push_back(lon);
+                        lon = strtod(token.c_str(), NULL);
+                        if (isValidLongitude(lon))
+                        {
+                            x.push_back(lon);
+                        }
+                        else
+                        {
+                            cout << token << " is not a valid longitude!" << endl;
+                        }
                     }
                     break;
             }
